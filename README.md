@@ -1,4 +1,5 @@
-This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
+# Manifest Link
+- chrome-extension://henkaponclikdflogfpphbagbiliejch/manifest.json
 
 ## Getting Started
 
