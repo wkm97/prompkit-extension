@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import styled from '@emotion/styled';
+import { tokens } from "~shared/theme/tokens";
 
 export const TextAreaContainer = styled.div({
   display: 'flex',
@@ -16,6 +17,7 @@ export const TextAreaLabel = styled.label({
 })
 
 export const TextAreaInput = styled.textarea(({ theme }) => ({
+  fontFamily: tokens.fontFamily.sans.join(','),
   color: theme.colors.text.primary,
   backgroundColor: theme.colors.fill.tertiary,
   fontSize: '1em',

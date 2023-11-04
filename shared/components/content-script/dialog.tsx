@@ -16,7 +16,7 @@ export const ModalOverlay = styled.div({
 })
 
 export const ModalContent = styled.div(({ theme }) => ({
-  fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+  fontFamily: tokens.fontFamily.sans.join(','),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',

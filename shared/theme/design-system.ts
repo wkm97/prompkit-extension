@@ -12,10 +12,18 @@ const darkTheme = {
     text: {
       primary: 'rgba(255, 255, 255, 0.85)',
       secondary: 'rgba(255, 255, 255, 0.55)',
-      tertiary: 'rgba(255, 255, 255, 0.25)'
+      tertiary: 'rgba(255, 255, 255, 0.25)',
+      negative: 'rgba(0, 0, 0, 0.85)'
     },
     accent: {
       primary: 'rgba(10, 132, 255, 1)'
+    },
+    status: {
+      info: '#63B3ED',
+      warning: "#FBD38D",
+      success: "#9AE6B4",
+      error: "#FEB2B2",
+      loading: "#90cdf4"
     }
   },
   shadows: {

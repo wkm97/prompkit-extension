@@ -4,6 +4,7 @@ import type { PlasmoCSConfig } from "plasmo"
 import { ManagerProvider } from "~shared/components/manager/context"
 import theme from "~shared/theme"
 import { Manager } from "~shared/components/manager"
+import { ToastProvider } from "~shared/components/toast/toast-provider"
 
 // export const config: PlasmoCSConfig = {
 //   matches: ["https://blank.org/",
@@ -32,9 +33,11 @@ export const ManagerApp = () => {
   return (
     <CacheProvider value={styleCache}>
       <ThemeProvider theme={theme}>
+        <ToastProvider>
           <ManagerProvider>
             <Manager />
           </ManagerProvider>
+        </ToastProvider>
       </ThemeProvider>
     </CacheProvider>
   )

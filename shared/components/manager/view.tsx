@@ -1,6 +1,6 @@
 import styled from "@emotion/styled"
 import { sendToBackground } from "@plasmohq/messaging"
-import { color, motion } from "framer-motion"
+import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { tokens } from "~shared/theme/tokens"
 import { initialEditing, useManager } from "./context"
@@ -9,6 +9,8 @@ import { GhostButton } from "../button/styled"
 import { TrashIcon, PencilSquareIcon, ClipboardIcon } from "@heroicons/react/24/outline"
 import { Spacer } from "../spacer"
 import React from "react"
+import { useToast } from "../toast/toast-provider"
+import { v4 as uuidv4 } from 'uuid';
 
 export const UnorderedList = styled.ul({
   margin: 0,
@@ -46,21 +48,34 @@ const PromptTemplateName = styled.span({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   lineHeight: 1.2
-})
+});
+
+const Notification = styled.div(({theme})=> ({
+  backgroundColor: theme.colors.status.success,
+  color: 'black',
+  padding: tokens.spacing["1"],
+  paddingRight: tokens.spacing["8"]
+}))
 
 interface PromptTemplateItemProps {
   promptTemplate: TPromptTemplate
+  onCopy: () => void
   onEdit: () => void
   onDelete: () => void
 }
 
-const PromptTemplateItem = ({ promptTemplate, onEdit, onDelete }: React.PropsWithChildren<PromptTemplateItemProps>) => {
+const PromptTemplateItem = ({ promptTemplate, onCopy, onEdit, onDelete }: React.PropsWithChildren<PromptTemplateItemProps>) => {
+  const preventPropagation: (handler: () => void) => React.MouseEventHandler<HTMLButtonElement> = (handler) => (e) => {
+    e.stopPropagation()
+    handler();
+  }
+
   return (<>
     <PromptTemplateName>{promptTemplate.name}</PromptTemplateName>
     <Spacer />
-    <GhostIconButton onClick={()=>navigator.clipboard.writeText(promptTemplate.template)}><ClipboardIcon width="1em" height="1em" strokeWidth={2} /></GhostIconButton>
-    <GhostIconButton onClick={onEdit}><PencilSquareIcon width="1em" height="1em" strokeWidth={2} /></GhostIconButton>
-    <GhostIconButton onClick={onDelete}><TrashIcon width="1em" height="1em" strokeWidth={2} /></GhostIconButton>
+    <GhostIconButton onClick={preventPropagation(onCopy)}><ClipboardIcon width="1em" height="1em" strokeWidth={2} /></GhostIconButton>
+    <GhostIconButton onClick={preventPropagation(onEdit)}><PencilSquareIcon width="1em" height="1em" strokeWidth={2} /></GhostIconButton>
+    <GhostIconButton onClick={preventPropagation(onDelete)}><TrashIcon width="1em" height="1em" strokeWidth={2} /></GhostIconButton>
   </>)
 }
 
@@ -69,6 +84,7 @@ export const ManagerView = () => {
   const { dispatch } = useManager()
   const [prompts, setPrompts] = useState<TPromptTemplate[]>([]);
   const [activeIndex, setActiveIndex] = useState(0)
+  const toast = useToast();
 
   const results = prompts
 
@@ -81,6 +97,14 @@ export const ManagerView = () => {
     sendToBackground({ name: 'prompt-template', body: { action: 'delete', payload: { id } } })
     setPrompts((prev) => {
       return prev.filter(item => item.id !== id)
+    })
+  }
+
+  const handleCopy = (template: string) => {
+    navigator.clipboard.writeText(template)
+    toast.addToast({
+      id: uuidv4(),
+      title: 'Prompt Copied'
     })
   }
 
@@ -130,10 +154,17 @@ export const ManagerView = () => {
             ref={active ? activeRef : null}
             aria-selected={active}
             onMouseOver={() => setActiveIndex(idx)}
-            onClick={()=> navigator.clipboard.writeText(promptTemplate.template)}
+            onClick={()=> handleCopy(promptTemplate.template)}
           >
             <PromptTemplateItem
               promptTemplate={promptTemplate}
+              onCopy={()=> {
+                navigator.clipboard.writeText(promptTemplate.template)
+                toast.addToast({
+                  id: uuidv4(),
+                  title: 'Prompt Copied'
+                })
+              }}
               onEdit={() => initialEditing(dispatch, { editor: promptTemplate })}
               onDelete={() => handleDelete(promptTemplate.id)}
             />
