@@ -1,14 +1,13 @@
 import styled from "@emotion/styled";
-import { ManagerActionKind, openManager, useManager } from "./context"
+import { openManager, useManager } from "./context"
 import { Formik, type FieldProps, Field, Form } from "formik";
 import { InputText, InputTextContainer, InputTextLabel } from "../form/input";
-import { sendToBackground } from "@plasmohq/messaging"
 import { TextArea, TextAreaContainer, TextAreaLabel } from "../form/text-area";
 import { SolidButton } from "../button/styled";
 import { motion } from "framer-motion";
 import { v4 as uuidv4 } from 'uuid';
 import { tokens } from "~shared/theme/tokens";
-import { capitalize } from "~shared/utils";
+import { IDBPuronputoAPI } from "~shared/indexeddb/puronputo";
 
 const StyledForm = styled(Form)({
   display: "flex",
@@ -59,17 +58,16 @@ export const ManagerEditor = () => {
         onSubmit={(values, actions) => {
           const { name, template } = values
           if (editor?.id) {
-            sendToBackground({ name: 'prompt-template', body: { action: 'upsert', payload: { ...editor, name, template } } })
+            IDBPuronputoAPI.upsertPromptTemplate({ ...editor, name, template })
           } else {
             const payload = {
               id: uuidv4(),
               name,
               template,
-              author: 'me',
               createdAt: Date.now(),
               updatedAt: Date.now()
             }
-            sendToBackground({ name: 'prompt-template', body: { action: 'upsert', payload } })
+            IDBPuronputoAPI.upsertPromptTemplate(payload)
           }
           openManager(dispatch)
         }}

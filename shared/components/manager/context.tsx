@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useReducer } from "react"
-import type { TPromptTemplate } from "~shared/models/prompt-template";
+import type { IDBPromptTemplate } from "~shared/models/prompt-template";
 
 export enum ManagerActionKind {
   VIEWING = "viewing",
@@ -11,12 +11,12 @@ export enum ManagerActionKind {
 
 type ManagerAction = {
   type: ManagerActionKind
-  payload?: { editor: Partial<TPromptTemplate> }
+  payload?: { editor: Partial<IDBPromptTemplate> }
 }
 
 export interface ManagerState {
   operation: ManagerActionKind
-  editor?: Partial<TPromptTemplate>
+  editor?: Partial<IDBPromptTemplate>
 }
 
 interface IManagerContext {

@@ -1,6 +1,5 @@
-export type TPromptTemplate = {
+export type IDBPromptTemplate = {
   id: string;
-  author: string;
   name: string;
   template: string;
   createdAt: EpochTimeStamp;

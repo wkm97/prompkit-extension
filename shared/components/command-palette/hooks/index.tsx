@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { type CommandPaletteProviderProps, type CommandPaletteQuery, type CommandPaletteState, type ICommandPaletteContext } from "./types";
-import { sendToBackground } from "@plasmohq/messaging";
+import { IDBPuronputoAPI } from "~shared/indexeddb/puronputo";
 
 const CommandPaletteContext = React.createContext<ICommandPaletteContext>(
   {} as ICommandPaletteContext
@@ -15,8 +15,8 @@ export const CommandPaletteProvider = ({ children }: React.PropsWithChildren<Com
   });
   
   const refetchPrompts = async() => {
-    const response = await sendToBackground({name: "prompt-template", body: {action: "getAll"}})
-    const actions = response.results.map((promptTemplate) => {
+    const results = await IDBPuronputoAPI.getAllPromptTemplate()
+    const actions = results.map((promptTemplate) => {
       return {
         id: promptTemplate.id,
         name: promptTemplate.name,

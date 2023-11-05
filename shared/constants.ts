@@ -1,5 +1,3 @@
-import type { TPromptTemplate } from "./models/prompt-template";
-
 export class PuronputoEvent {
   public static Command = class {
     public static readonly TRIGGER_PANEL = "trigger-panel";

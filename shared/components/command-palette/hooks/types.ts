@@ -1,5 +1,3 @@
-import type { TPromptTemplate } from "~shared/models/prompt-template";
-
 type ActionId = string;
 
 export type Action = {
