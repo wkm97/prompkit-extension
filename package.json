@@ -16,6 +16,7 @@
     "@heroicons/react": "^2.0.18",
     "@plasmohq/messaging": "^0.5.0",
     "dexie": "^3.2.4",
+    "flexsearch-ts": "^0.7.35",
     "formik": "^2.4.5",
     "framer-motion": "^10.16.4",
     "plasmo": "0.83.0",

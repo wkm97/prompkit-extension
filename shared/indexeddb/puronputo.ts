@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { sendToBackground, type PlasmoMessaging } from "@plasmohq/messaging";
 
 export class IDBPuronputo extends Dexie {
-  promptTemplate!: Dexie.Table<IDBPromptTemplate, number>;
+  promptTemplate!: Dexie.Table<IDBPromptTemplate, string>;
   
   constructor() {  
     super("IDBPuronputo");
@@ -25,24 +25,6 @@ export class IDBPuronputo extends Dexie {
       this.promptTemplate.bulkAdd(samples)
     })
   }
-
-  messagingHandler (req: PlasmoMessaging.Request, res: PlasmoMessaging.Response) {
-    if (req.body.action === 'upsert') {
-      this.promptTemplate.put(req.body.payload)
-    }
-  
-    if (req.body.action === 'delete') {
-      this.promptTemplate.delete(req.body.payload.id)
-    }
-  
-    if (req.body.action === 'getAll') {
-      this.promptTemplate.orderBy('createdAt').reverse().toArray().then(results => {
-        res.send({
-          results
-        })
-      })
-    }
-  }
 }
 
 // API for the content script to send message to background
@@ -60,5 +42,10 @@ export namespace IDBPuronputoAPI {
 
   export const deletePromptTemplate = async (id: string) => {
     sendToBackground({ name: messageName, body: { action: 'delete', payload: { id } } })
+  }
+
+  export const searchPromptTemplate = async (query: string) => {
+    const response = await sendToBackground({name: messageName, body: {action: "search", payload: {query}}})
+    return response
   }
 }

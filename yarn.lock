@@ -2972,6 +2972,11 @@ find-root@^1.1.0:
   resolved "https://registry.yarnpkg.com/find-root/-/find-root-1.1.0.tgz#abcfc8ba76f708c42a97b3d685b7e9450bfb9ce4"
   integrity sha512-NKfW6bec6GfKc0SGx1e07QZY9PE99u0Bft/0rzSD5k3sO/vwkVUpDUKVm5Gpp5Ue3YfShPFTX2070tDs5kB9Ng==
 
+flexsearch-ts@^0.7.35:
+  version "0.7.35"
+  resolved "https://registry.yarnpkg.com/flexsearch-ts/-/flexsearch-ts-0.7.35.tgz#9475533ab893c5b71f3f79028a8bb4d07c36e7a0"
+  integrity sha512-u+9rKRd9lsoUXyesQcDJ/aFdfFAWInigK95DUnmifbeOLU5LvjGiwqq+Xr55rCUbJCOSG8KTY+BoWWqFx5gbwA==
+
 form-data-encoder@^2.1.2:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/form-data-encoder/-/form-data-encoder-2.1.4.tgz#261ea35d2a70d48d30ec7a9603130fa5515e9cd5"
