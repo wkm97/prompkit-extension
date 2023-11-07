@@ -4,7 +4,7 @@ import { tokens } from "~shared/theme/tokens";
 import type { PlasmoMessaging } from "@plasmohq/messaging";
 import { useMessage } from "@plasmohq/messaging/hook";
 import { ContentScriptDialog } from "../content-script/dialog";
-import { closeManager, initialCreating, openManager, useManager, type ManagerState } from "./context";
+import { closeManager, initialCreating, openManager, useManager, type ManagerState, searchResult } from "./context";
 import { ManagerEditor } from "./editor";
 import { ManagerView } from "./view";
 import { XMarkIcon, PlusIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
@@ -42,7 +42,7 @@ const Search = styled(BaseSearchInput)(({ theme }) => ({
 
 export const Manager = ({ children }: React.PropsWithChildren) => {
   const { state, dispatch } = useManager();
-  const { operation, editor } = state
+  const { operation } = state
 
   const handleMessage: PlasmoMessaging.Handler = (
     req
@@ -53,7 +53,7 @@ export const Manager = ({ children }: React.PropsWithChildren) => {
           navigator.clipboard
             .readText()
             .then(
-              (clipText) => initialCreating(dispatch, { editor: { template: clipText } }));
+              (clipText) => initialCreating(dispatch, { template: clipText } ));
         })
     }
     if (req.name === "trigger-manager") {
@@ -84,7 +84,7 @@ export const Manager = ({ children }: React.PropsWithChildren) => {
             <Spacer />
           </>}
           {["viewing"].includes(operation) && <>
-            <Search autoFocus placeholder="Search Prompt..." />
+            <Search autoFocus placeholder="Search Prompt..." onChange={(e)=> searchResult(dispatch, e.target.value)}/>
             <GhostIconButton onClick={() => initialCreating(dispatch)} aria-label="create">
               <PlusIcon width="1em" height="1em" strokeWidth={3} />
             </GhostIconButton></>}

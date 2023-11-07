@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useReducer } from "react"
+import React, { useEffect, useMemo, useReducer } from "react";
 import type { IDBPromptTemplate } from "~shared/models/prompt-template";
 
 export enum ManagerActionKind {
@@ -11,11 +10,12 @@ export enum ManagerActionKind {
 
 type ManagerAction = {
   type: ManagerActionKind
-  payload?: { editor: Partial<IDBPromptTemplate> }
+  payload?: { editor?: Partial<IDBPromptTemplate>, query?: string }
 }
 
 export interface ManagerState {
   operation: ManagerActionKind
+  query?: string
   editor?: Partial<IDBPromptTemplate>
 }
 
@@ -37,6 +37,7 @@ export const ManagerProvider = ({ children }: React.PropsWithChildren) => {
           return {
             ...state,
             operation: ManagerActionKind.VIEWING,
+            query: payload?.query || ""
           };
         case ManagerActionKind.CREATING:
           return {
@@ -54,12 +55,13 @@ export const ManagerProvider = ({ children }: React.PropsWithChildren) => {
           return {
             ...state,
             operation: ManagerActionKind.CLOSE,
+            query: "",
             editor: undefined
-          }
+          };
         default:
           return state;
       }
-    }, { operation: ManagerActionKind.CLOSE })
+    }, { operation: ManagerActionKind.CLOSE, query: "" })
 
   useEffect(() => {
     const handler = (event) => {
@@ -80,7 +82,11 @@ export const ManagerProvider = ({ children }: React.PropsWithChildren) => {
     return () => window.removeEventListener("keydown", handler);
   }, [state.operation])
 
-  return <ManagerContext.Provider value={{ state, dispatch }}>
+  const context = useMemo(() => ({
+    state, dispatch
+  }), [state])
+
+  return <ManagerContext.Provider value={context}>
     {children}
   </ManagerContext.Provider>
 }
@@ -96,13 +102,17 @@ export const useManager = () => {
 export const closeManager = (dispatch: React.Dispatch<ManagerAction>) => dispatch({ type: ManagerActionKind.CLOSE })
 export const openManager = (dispatch: React.Dispatch<ManagerAction>) => dispatch({ type: ManagerActionKind.VIEWING })
 
+export const searchResult = (
+  dispatch: React.Dispatch<ManagerAction>, query: string
+) => dispatch({ type: ManagerActionKind.VIEWING, payload: { query } })
+
 export const initialEditing = (
-  dispatch: React.Dispatch<ManagerAction>, payload: ManagerAction["payload"]
-) => dispatch({ type: ManagerActionKind.EDITING, payload })
+  dispatch: React.Dispatch<ManagerAction>, editorData: Partial<IDBPromptTemplate>
+) => dispatch({ type: ManagerActionKind.EDITING, payload: {editor: editorData} })
 
 export const initialCreating = (
-  dispatch: React.Dispatch<ManagerAction>, payload?: ManagerAction["payload"]
+  dispatch: React.Dispatch<ManagerAction>, editorData?: Partial<IDBPromptTemplate>
 ) => dispatch({
   type: ManagerActionKind.CREATING,
-  payload
+  payload: {editor: editorData}
 })

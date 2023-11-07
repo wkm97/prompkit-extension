@@ -6,10 +6,10 @@ import { sendToBackground, type PlasmoMessaging } from "@plasmohq/messaging";
 
 export class IDBPuronputo extends Dexie {
   promptTemplate!: Dexie.Table<IDBPromptTemplate, string>;
-  
-  constructor() {  
+
+  constructor() {
     super("IDBPuronputo");
-    
+
     this.version(1).stores({
       promptTemplate: "&id,name,createdAt"
     })
@@ -32,7 +32,7 @@ export namespace IDBPuronputoAPI {
   const messageName = 'prompt-template'
 
   export const getAllPromptTemplate = async (): Promise<IDBPromptTemplate[]> => {
-    const response = await sendToBackground({name: messageName, body: {action: "getAll"}})
+    const response = await sendToBackground({ name: messageName, body: { action: "getAll" } })
     return response.results
   }
 
@@ -45,7 +45,13 @@ export namespace IDBPuronputoAPI {
   }
 
   export const searchPromptTemplate = async (query: string) => {
-    const response = await sendToBackground({name: messageName, body: {action: "search", payload: {query}}})
-    return response
+    if (query) {
+      const response = await sendToBackground({ name: messageName, body: { action: "search", payload: { query } } })
+      return response.results
+    }
+    else {
+      const response = await sendToBackground({ name: messageName, body: { action: "getAll" } })
+      return response.results
+    }
   }
 }

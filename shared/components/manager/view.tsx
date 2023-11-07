@@ -1,13 +1,12 @@
 import styled from "@emotion/styled"
 import { motion } from "framer-motion"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { tokens } from "~shared/theme/tokens"
 import { initialEditing, useManager } from "./context"
 import type { IDBPromptTemplate } from "~shared/models/prompt-template"
 import { GhostButton } from "../button/styled"
 import { TrashIcon, PencilSquareIcon, ClipboardIcon } from "@heroicons/react/24/outline"
 import { Spacer } from "../spacer"
-import React from "react"
 import { useToast } from "../toast/toast-provider"
 import { v4 as uuidv4 } from 'uuid';
 import { IDBPuronputoAPI } from "~shared/indexeddb/puronputo"
@@ -16,7 +15,8 @@ export const UnorderedList = styled.ul({
   margin: 0,
   listStyleType: 'none',
   padding: 0,
-  width: '60vw'
+  width: '60vw',
+  maxHeight: '80vh'
 })
 
 const ListItem = styled.li(({ theme }) => ({
@@ -81,7 +81,8 @@ const PromptTemplateItem = ({ promptTemplate, onCopy, onEdit, onDelete }: React.
 
 export const ManagerView = () => {
   const activeRef = React.useRef<HTMLLIElement>(null);
-  const { dispatch } = useManager()
+  const { state, dispatch } = useManager()
+  const {query} = state
   const [prompts, setPrompts] = useState<IDBPromptTemplate[]>([]);
   const [activeIndex, setActiveIndex] = useState(0)
   const toast = useToast();
@@ -89,7 +90,8 @@ export const ManagerView = () => {
   const results = prompts
 
   const refetchPrompts = async () => {
-    const results = await IDBPuronputoAPI.getAllPromptTemplate()
+    const results = await IDBPuronputoAPI.searchPromptTemplate(query)
+    console.log(results)
     setPrompts(results)
   }
 
@@ -110,7 +112,7 @@ export const ManagerView = () => {
 
   useEffect(() => {
     refetchPrompts()
-  }, [])
+  }, [query])
 
   useEffect(() => {
     const handler = (event) => {
@@ -165,7 +167,7 @@ export const ManagerView = () => {
                   title: 'Prompt Copied'
                 })
               }}
-              onEdit={() => initialEditing(dispatch, { editor: promptTemplate })}
+              onEdit={() => initialEditing(dispatch, promptTemplate)}
               onDelete={() => handleDelete(promptTemplate.id)}
             />
           </ListItem>
