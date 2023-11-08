@@ -22,6 +22,8 @@
     "plasmo": "0.83.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-virtualized-auto-sizer": "^1.0.20",
+    "react-window": "^1.8.9",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
@@ -30,6 +32,7 @@
     "@types/node": "20.5.9",
     "@types/react": "^18.2.34",
     "@types/react-dom": "18.2.7",
+    "@types/react-window": "^1.8.7",
     "prettier": "3.0.3",
     "typescript": "5.2.2"
   },

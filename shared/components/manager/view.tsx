@@ -10,17 +10,21 @@ import { Spacer } from "../spacer"
 import { useToast } from "../toast/toast-provider"
 import { v4 as uuidv4 } from 'uuid';
 import { IDBPuronputoAPI } from "~shared/indexeddb/puronputo"
+import { FixedSizeList } from 'react-window';
+import AutoResizer from "react-virtualized-auto-sizer"
+import { useSearchPromptTemplate } from "~shared/hooks/useSearchPromptTemplate"
+
+const List = FixedSizeList<IDBPromptTemplate[]>
 
 export const UnorderedList = styled.ul({
   margin: 0,
   listStyleType: 'none',
   padding: 0,
   width: '60vw',
-  maxHeight: '80vh'
+  paddingBottom: '0.5em'
 })
 
 const ListItem = styled.li(({ theme }) => ({
-  height: '1em',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -30,10 +34,6 @@ const ListItem = styled.li(({ theme }) => ({
   backgroundColor: 'transparent',
   "&[aria-selected=true]": {
     backgroundColor: theme.colors.accent.primary
-  },
-  ':last-child': {
-    borderBottomLeftRadius: tokens.borderRadius.md,
-    borderBottomRightRadius: tokens.borderRadius.md
   }
 }))
 
@@ -49,13 +49,6 @@ const PromptTemplateName = styled.span({
   textOverflow: 'ellipsis',
   lineHeight: 1.2
 });
-
-const Notification = styled.div(({theme})=> ({
-  backgroundColor: theme.colors.status.success,
-  color: 'black',
-  padding: tokens.spacing["1"],
-  paddingRight: tokens.spacing["8"]
-}))
 
 interface PromptTemplateItemProps {
   promptTemplate: IDBPromptTemplate
@@ -81,38 +74,30 @@ const PromptTemplateItem = ({ promptTemplate, onCopy, onEdit, onDelete }: React.
 
 export const ManagerView = () => {
   const activeRef = React.useRef<HTMLLIElement>(null);
+  const listRef = React.useRef(null);
   const { state, dispatch } = useManager()
-  const {query} = state
-  const [prompts, setPrompts] = useState<IDBPromptTemplate[]>([]);
-  const [activeIndex, setActiveIndex] = useState(0)
+  const { query } = state
+  const [activeIndex, setActiveIndex] = useState(0);
   const toast = useToast();
-
-  const results = prompts
-
-  const refetchPrompts = async () => {
-    const results = await IDBPuronputoAPI.searchPromptTemplate(query)
-    console.log(results)
-    setPrompts(results)
-  }
+  const {results, mutate} = useSearchPromptTemplate({query, onQueryChange: ()=> setActiveIndex(0)})
 
   const handleDelete = (id: string) => {
-    IDBPuronputoAPI.deletePromptTemplate(id)
-    setPrompts((prev) => {
-      return prev.filter(item => item.id !== id)
-    })
+    mutate(()=> IDBPuronputoAPI.deletePromptTemplate(id))
   }
 
-  const handleCopy = (template: string) => {
-    navigator.clipboard.writeText(template)
+  const handleCopy = (promptTemplate: IDBPromptTemplate) => {
+    navigator.clipboard.writeText(promptTemplate.template)
     toast.addToast({
       id: uuidv4(),
-      title: 'Prompt Copied'
+      title: `Prompt Copied ${promptTemplate.name}`
     })
   }
 
   useEffect(() => {
-    refetchPrompts()
-  }, [query])
+    if (listRef) {
+      listRef.current?.scrollToItem(activeIndex, 'smart')
+    }
+  }, [activeIndex])
 
   useEffect(() => {
     const handler = (event) => {
@@ -121,6 +106,7 @@ export const ManagerView = () => {
       }
       if (event.key === "ArrowUp" || (event.ctrlKey && event.key === "p")) {
         event.preventDefault();
+        document.body.requestPointerLock();
         setActiveIndex((index) => {
           const nextIndex = index > 0 ? index - 1 : index;
           return nextIndex;
@@ -128,6 +114,7 @@ export const ManagerView = () => {
       }
       if (event.key === "ArrowDown" || (event.ctrlKey && event.key === "n")) {
         event.preventDefault();
+        document.body.requestPointerLock();
         setActiveIndex((index) => {
           const nextIndex = index < results.length - 1 ? index + 1 : index;
           return nextIndex;
@@ -138,41 +125,69 @@ export const ManagerView = () => {
         activeRef.current?.click();
       }
     }
+
+    const exitPointerLockHandler = () => {
+      if (document.pointerLockElement === document.body) {
+        document.exitPointerLock();
+      }
+    }
+
     window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    document.body.addEventListener("mousemove", exitPointerLockHandler);
+    return () => {
+      window.removeEventListener("keydown", handler)
+      document.body.removeEventListener("mousemove", exitPointerLockHandler);
+    };
   }, [results])
+
+  const height = Math.min(640, results.length * 64)
 
   return <motion.div
     initial={{ y: 10, opacity: 0 }}
     animate={{ y: 0, opacity: 1 }}
     exit={{ y: -10, opacity: 0 }}
     transition={{ duration: 0.5 }}>
-    <UnorderedList>
-      {results.map((promptTemplate: IDBPromptTemplate, idx) => {
-        const active = idx === activeIndex
-        return (
-          <ListItem
-            key={promptTemplate.id}
-            ref={active ? activeRef : null}
-            aria-selected={active}
-            onMouseOver={() => setActiveIndex(idx)}
-            onClick={()=> handleCopy(promptTemplate.template)}
+    <UnorderedList style={{ height: height }}>
+      <AutoResizer>
+        {({ height, width }) => (
+          <List
+            height={height}
+            itemCount={results.length}
+            itemData={results}
+            itemSize={64}
+            ref={listRef}
+            width={width}
           >
-            <PromptTemplateItem
-              promptTemplate={promptTemplate}
-              onCopy={()=> {
-                navigator.clipboard.writeText(promptTemplate.template)
-                toast.addToast({
-                  id: uuidv4(),
-                  title: 'Prompt Copied'
-                })
-              }}
-              onEdit={() => initialEditing(dispatch, promptTemplate)}
-              onDelete={() => handleDelete(promptTemplate.id)}
-            />
-          </ListItem>
-        )
-      })}
+            {({ data, index, style }) => {
+              const promptTemplate = data[index]
+              const active = index === activeIndex
+              return (<div style={style}>
+                <ListItem
+                  key={promptTemplate.id}
+                  ref={active ? activeRef : null}
+                  aria-selected={active}
+                  onMouseOver={() => setActiveIndex(index)}
+                  onClick={() => handleCopy(promptTemplate)}
+                >
+                  <PromptTemplateItem
+                    promptTemplate={promptTemplate}
+                    onCopy={() => {
+                      navigator.clipboard.writeText(promptTemplate.template)
+                      toast.addToast({
+                        id: uuidv4(),
+                        title: `Prompt Copied ${promptTemplate.name}`
+                      })
+                    }}
+                    onEdit={() => initialEditing(dispatch, promptTemplate)}
+                    onDelete={() => handleDelete(promptTemplate.id)}
+                  />
+                </ListItem>
+              </div>)
+            }}
+          </List>
+        )}
+      </AutoResizer>
+
     </UnorderedList>
   </motion.div>
 }
