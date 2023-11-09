@@ -2,7 +2,7 @@ import styled from "@emotion/styled"
 import { motion } from "framer-motion"
 import React, { useEffect, useState } from "react"
 import { tokens } from "~shared/theme/tokens"
-import { initialEditing, useManager } from "./context"
+import { closeManager, initialEditing, useManager } from "./context"
 import type { IDBPromptTemplate } from "~shared/models/prompt-template"
 import { GhostButton } from "../button/styled"
 import { TrashIcon, PencilSquareIcon, ClipboardIcon } from "@heroicons/react/24/outline"
@@ -89,8 +89,19 @@ export const ManagerView = () => {
     navigator.clipboard.writeText(promptTemplate.template)
     toast.addToast({
       id: uuidv4(),
-      title: `Prompt Copied ${promptTemplate.name}`
+      title: `Prompt Copied.`
     })
+  }
+
+  const handleInsert = (promptTemplate: IDBPromptTemplate) => {
+    const event = new CustomEvent("insert-prompt", {
+      detail: {
+        template: promptTemplate.template
+      }
+    })
+    document.dispatchEvent(event)
+    closeManager(dispatch)
+
   }
 
   useEffect(() => {
@@ -167,17 +178,11 @@ export const ManagerView = () => {
                   ref={active ? activeRef : null}
                   aria-selected={active}
                   onMouseOver={() => setActiveIndex(index)}
-                  onClick={() => handleCopy(promptTemplate)}
+                  onClick={() => handleInsert(promptTemplate)}
                 >
                   <PromptTemplateItem
                     promptTemplate={promptTemplate}
-                    onCopy={() => {
-                      navigator.clipboard.writeText(promptTemplate.template)
-                      toast.addToast({
-                        id: uuidv4(),
-                        title: `Prompt Copied ${promptTemplate.name}`
-                      })
-                    }}
+                    onCopy={() => handleCopy(promptTemplate)}
                     onEdit={() => initialEditing(dispatch, promptTemplate)}
                     onDelete={() => handleDelete(promptTemplate.id)}
                   />

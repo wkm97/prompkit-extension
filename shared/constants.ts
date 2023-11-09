@@ -1,7 +1,7 @@
 export class PuronputoEvent {
   public static Command = class {
-    public static readonly TRIGGER_PANEL = "trigger-panel";
-
+    public static readonly TRIGGER_MANAGER = "trigger-manager";
+    public static readonly COPY_PROMPT = "copy-prompt";
   }
 }
 

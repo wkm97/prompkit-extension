@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+
+export interface IPromptInjectorContext {
+  targetElement: HTMLElement;
+}
+
+const PromptInjectorContext = React.createContext<IPromptInjectorContext>({} as IPromptInjectorContext)
 
 const setCursorToEnd = (element: Element) => {
   const range = document.createRange();
@@ -11,28 +17,7 @@ const setCursorToEnd = (element: Element) => {
   sel.addRange(range);
 }
 
-export const isEditableElement = (element: Element) => {
-  const tagName = element.tagName.toLowerCase();
-  if (tagName === 'textarea') return true;
-  if (tagName === 'input') return true;
-  if (element.getAttribute("contenteditable") === "true") return true
-  return false;
-}
-
-export const getFirstEditableElement = (): HTMLElement => {
-  const textarea = document.querySelector("textarea");
-  if (textarea) return textarea;
-
-  const input = document.querySelector("input");
-  if (input) return input;
-
-  const editable = document.querySelector('[contenteditable="true"]') as HTMLElement;
-  if(editable) return editable
-
-  return undefined
-}
-
-export const promptInjector = (element: Element) => {
+const promptInjector = (element: Element) => {
   if (['textarea', 'input'].includes(element?.tagName.toLowerCase())) {
     return (prompt: string) => {
       const inputEvent = new Event("input", { bubbles: true, cancelable: false, composed: true })
@@ -61,8 +46,28 @@ export const promptInjector = (element: Element) => {
   }
 }
 
-export const usePromptInjector = () => {
+export const isEditableElement = (element: Element) => {
+  const tagName = element.tagName.toLowerCase();
+  if (tagName === 'textarea') return true;
+  if (tagName === 'input') return true;
+  if (element.getAttribute("contenteditable") === "true") return true
+  return false;
+}
 
+export const getFirstEditableElement = (): HTMLElement => {
+  const textarea = document.querySelector("textarea");
+  if (textarea) return textarea;
+
+  const input = document.querySelector("input");
+  if (input) return input;
+
+  const editable = document.querySelector('[contenteditable="true"]');
+  if(editable) return editable as HTMLElement
+
+  return undefined
+}
+
+export const PromptInjectorProvider = ({children}: React.PropsWithChildren) => {
   const [targetElement, setTargetElement] = useState<HTMLElement>();
 
   const injector = React.useCallback(promptInjector(targetElement), [targetElement])
@@ -78,7 +83,10 @@ export const usePromptInjector = () => {
   }, [])
 
   useEffect(() => {
-    const eventHandler = (e: CustomEvent) => injector(e.detail.template)
+    const eventHandler = (e: CustomEvent) => {
+      injector(e.detail.template)
+      targetElement.focus();
+    }
     document.addEventListener("insert-prompt", eventHandler)
 
     return () => document.removeEventListener("insert-prompt", eventHandler)
@@ -95,5 +103,11 @@ export const usePromptInjector = () => {
 
   }, [])
 
-  return { injector, targetElement }
+  const context = useMemo(()=>({targetElement}), [targetElement])
+
+  return (
+    <PromptInjectorContext.Provider value={context}>
+      {children}
+    </PromptInjectorContext.Provider>
+  );
 }

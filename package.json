@@ -44,7 +44,7 @@
       "contextMenus"
     ],
     "commands": {
-      "trigger-panel": {
+      "trigger-manager": {
         "suggested_key": {
           "default": "Ctrl+K",
           "mac": "Command+K"

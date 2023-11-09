@@ -8,7 +8,7 @@ const index = new FlexSearch.Document<IDBPromptTemplate, false>({
     id: "id",
     index: ["name", "template"]
   },
-  tokenize: 'forward'
+  tokenize: 'full'
 });
 
 

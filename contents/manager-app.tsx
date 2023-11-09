@@ -5,6 +5,7 @@ import { ManagerProvider } from "~shared/components/manager/context"
 import theme from "~shared/theme"
 import { Manager } from "~shared/components/manager"
 import { ToastProvider } from "~shared/components/toast/toast-provider"
+import { PromptInjectorProvider } from "~shared/contexts/injector-context"
 
 // export const config: PlasmoCSConfig = {
 //   matches: ["https://blank.org/",
@@ -14,7 +15,7 @@ import { ToastProvider } from "~shared/components/toast/toast-provider"
 // }
 
 export const config: PlasmoCSConfig = {
-  matches: ["https://*/*"]
+  matches: ["https://*/*"],
 }
 
 const styleElement = document.createElement("style")
@@ -33,11 +34,13 @@ export const ManagerApp = () => {
   return (
     <CacheProvider value={styleCache}>
       <ThemeProvider theme={theme}>
-        <ToastProvider>
-          <ManagerProvider>
-            <Manager />
-          </ManagerProvider>
-        </ToastProvider>
+        <PromptInjectorProvider>
+          <ToastProvider>
+            <ManagerProvider>
+              <Manager />
+            </ManagerProvider>
+          </ToastProvider>
+        </PromptInjectorProvider>
       </ThemeProvider>
     </CacheProvider>
   )
