@@ -1,5 +1,4 @@
 import type { PlasmoCSConfig } from "plasmo"
-import { useEffect } from "react"
 import createCache from "@emotion/cache"
 import { CacheProvider, ThemeProvider } from "@emotion/react"
 import theme from "~shared/theme"
@@ -8,7 +7,6 @@ import { RenderResults } from "~shared/components/command-palette/results"
 import { CommandPaletteProvider } from "~shared/components/command-palette/hooks"
 import { usePromptInjector } from "~shared/components/command-palette/hooks/use-injector"
 import { CommandPaletteDialog } from "~shared/components/command-palette/dialog"
-import { examplePrompts } from "~shared/constants"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://blank.org/",
@@ -27,7 +25,7 @@ const styleCache = createCache({
 
 export const getStyle = () => styleElement
 
-export const getShadowHostId = () => "puronputo-panel"
+export const getShadowHostId = () => "prompkit-panel"
 
 const CommandPalette = () => {
   const { targetElement } = usePromptInjector();

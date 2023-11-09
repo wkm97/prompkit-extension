@@ -14,7 +14,7 @@ import { BaseSearchInput } from "../form/input";
 import { capitalize } from "~shared/utils";
 import { Heading3 } from "../text/heading";
 import { Spacer } from "../spacer";
-import { PuronputoEvent } from "~shared/constants";
+import { PrompkitEvent } from "~shared/constants";
 
 const ManagerHeader = styled.div<ManagerState>(({ operation }) => ({
   padding: `${tokens.spacing[2]} ${tokens.spacing[4]}`,
@@ -48,7 +48,7 @@ export const Manager = ({ children }: React.PropsWithChildren) => {
   const handleMessage: PlasmoMessaging.Handler = (
     req
   ) => {
-    if (req.name === PuronputoEvent.Command.COPY_PROMPT) {
+    if (req.name === PrompkitEvent.Command.COPY_PROMPT) {
       navigator.clipboard.writeText(document.getSelection().toString())
         .then(() => {
           navigator.clipboard
@@ -57,7 +57,7 @@ export const Manager = ({ children }: React.PropsWithChildren) => {
               (clipText) => initialCreating(dispatch, { template: clipText } ));
         })
     }
-    if (req.name === PuronputoEvent.Command.TRIGGER_MANAGER) {
+    if (req.name === PrompkitEvent.Command.TRIGGER_MANAGER) {
       if (operation !== "close") {
         closeManager(dispatch)
       } else {

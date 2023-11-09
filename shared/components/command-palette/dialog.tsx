@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { tokens } from "~shared/theme/tokens";
 import { useCommandPalette } from "./hooks";
 import type { PlasmoMessaging } from "@plasmohq/messaging";
-import { PuronputoEvent } from "~shared/constants";
+import { PrompkitEvent } from "~shared/constants";
 import { useMessage } from "@plasmohq/messaging/hook";
 import { useKeyPress } from "~shared/hooks/useKeyPress";
 import { ContentScriptDialog } from "../content-script/dialog";
@@ -33,7 +33,7 @@ export const CommandPaletteDialog = ({ children, onClose }: React.PropsWithChild
   const panelHandler: PlasmoMessaging.Handler = (
     req
   ) => {
-    if (req.name === PuronputoEvent.Command.TRIGGER_PANEL) {
+    if (req.name === PrompkitEvent.Command.TRIGGER_PANEL) {
       query.setShowing(!showing)
     }
   }

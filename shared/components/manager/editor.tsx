@@ -7,7 +7,7 @@ import { SolidButton } from "../button/styled";
 import { motion } from "framer-motion";
 import { v4 as uuidv4 } from 'uuid';
 import { tokens } from "~shared/theme/tokens";
-import { IDBPuronputoAPI } from "~shared/indexeddb/puronputo";
+import { IDBPrompkitAPI } from "~shared/indexeddb/prompkit";
 
 const StyledForm = styled(Form)({
   display: "flex",
@@ -58,7 +58,7 @@ export const ManagerEditor = () => {
         onSubmit={(values, actions) => {
           const { name, template } = values
           if (editor?.id) {
-            IDBPuronputoAPI.upsertPromptTemplate({ ...editor, name, template })
+            IDBPrompkitAPI.upsertPromptTemplate({ ...editor, name, template })
           } else {
             const payload = {
               id: uuidv4(),
@@ -67,7 +67,7 @@ export const ManagerEditor = () => {
               createdAt: Date.now(),
               updatedAt: Date.now()
             }
-            IDBPuronputoAPI.upsertPromptTemplate(payload)
+            IDBPrompkitAPI.upsertPromptTemplate(payload)
           }
           openManager(dispatch)
         }}

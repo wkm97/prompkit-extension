@@ -1,5 +1,5 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
-import { IDBPuronputo } from "~shared/indexeddb/puronputo";
+import { IDBPrompkit } from "~shared/indexeddb/prompkit";
 import * as FlexSearch from 'flexsearch-ts';
 import type { IDBPromptTemplate } from "~shared/models/prompt-template";
 
@@ -12,7 +12,7 @@ const index = new FlexSearch.Document<IDBPromptTemplate, false>({
 });
 
 
-const db = new IDBPuronputo()
+const db = new IDBPrompkit()
 
 db.promptTemplate.toArray().then(results => {
   results.forEach(item => {

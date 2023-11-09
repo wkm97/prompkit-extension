@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { type CommandPaletteProviderProps, type CommandPaletteQuery, type CommandPaletteState, type ICommandPaletteContext } from "./types";
-import { IDBPuronputoAPI } from "~shared/indexeddb/puronputo";
+import { IDBPrompkitAPI } from "~shared/indexeddb/prompkit";
 
 const CommandPaletteContext = React.createContext<ICommandPaletteContext>(
   {} as ICommandPaletteContext
@@ -15,7 +15,7 @@ export const CommandPaletteProvider = ({ children }: React.PropsWithChildren<Com
   });
   
   const refetchPrompts = async() => {
-    const results = await IDBPuronputoAPI.getAllPromptTemplate()
+    const results = await IDBPrompkitAPI.getAllPromptTemplate()
     const actions = results.map((promptTemplate) => {
       return {
         id: promptTemplate.id,

@@ -1,8 +1,8 @@
 {
-  "name": "puronputo-extension",
-  "displayName": "Puronputo extension",
+  "name": "prompkit-extension",
+  "displayName": "Prompkit extension",
   "version": "0.0.1",
-  "description": "Puronputo Chrome Extension",
+  "description": "Prompkit extension",
   "author": "karming",
   "scripts": {
     "dev": "plasmo dev",

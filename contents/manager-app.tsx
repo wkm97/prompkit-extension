@@ -28,7 +28,7 @@ const styleCache = createCache({
 
 export const getStyle = () => styleElement
 
-export const getShadowHostId = () => "puronputo-manager"
+export const getShadowHostId = () => "prompkit-manager"
 
 export const ManagerApp = () => {
   return (

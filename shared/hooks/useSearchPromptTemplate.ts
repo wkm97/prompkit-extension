@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IDBPuronputoAPI } from "~shared/indexeddb/puronputo";
+import { IDBPrompkitAPI } from "~shared/indexeddb/prompkit";
 import type { IDBPromptTemplate } from "~shared/models/prompt-template";
 
 interface UseSearchPromptTemplateProps {
@@ -12,7 +12,7 @@ export const useSearchPromptTemplate = ({query, onQueryChange}: UseSearchPromptT
 
 
   const refetchPrompts = async () => {
-    const results = await IDBPuronputoAPI.searchPromptTemplate(query)
+    const results = await IDBPrompkitAPI.searchPromptTemplate(query)
     setResults(results)
   }
 

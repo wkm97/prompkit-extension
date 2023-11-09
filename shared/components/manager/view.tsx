@@ -9,7 +9,7 @@ import { TrashIcon, PencilSquareIcon, ClipboardIcon } from "@heroicons/react/24/
 import { Spacer } from "../spacer"
 import { useToast } from "../toast/toast-provider"
 import { v4 as uuidv4 } from 'uuid';
-import { IDBPuronputoAPI } from "~shared/indexeddb/puronputo"
+import { IDBPrompkitAPI } from "~shared/indexeddb/prompkit"
 import { FixedSizeList } from 'react-window';
 import AutoResizer from "react-virtualized-auto-sizer"
 import { useSearchPromptTemplate } from "~shared/hooks/useSearchPromptTemplate"
@@ -82,7 +82,7 @@ export const ManagerView = () => {
   const {results, mutate} = useSearchPromptTemplate({query, onQueryChange: ()=> setActiveIndex(0)})
 
   const handleDelete = (id: string) => {
-    mutate(()=> IDBPuronputoAPI.deletePromptTemplate(id))
+    mutate(()=> IDBPrompkitAPI.deletePromptTemplate(id))
   }
 
   const handleCopy = (promptTemplate: IDBPromptTemplate) => {

@@ -1,4 +1,4 @@
-export class PuronputoEvent {
+export class PrompkitEvent {
   public static Command = class {
     public static readonly TRIGGER_MANAGER = "trigger-manager";
     public static readonly COPY_PROMPT = "copy-prompt";

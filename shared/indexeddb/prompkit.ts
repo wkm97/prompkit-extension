@@ -4,11 +4,11 @@ import type { IDBPromptTemplate } from "~shared/models/prompt-template";
 import { v4 as uuidv4 } from 'uuid';
 import { sendToBackground, type PlasmoMessaging } from "@plasmohq/messaging";
 
-export class IDBPuronputo extends Dexie {
+export class IDBPrompkit extends Dexie {
   promptTemplate!: Dexie.Table<IDBPromptTemplate, string>;
 
   constructor() {
-    super("IDBPuronputo");
+    super("IDBPrompkit");
 
     this.version(1).stores({
       promptTemplate: "&id,name,createdAt"
@@ -28,7 +28,7 @@ export class IDBPuronputo extends Dexie {
 }
 
 // API for the content script to send message to background
-export namespace IDBPuronputoAPI {
+export namespace IDBPrompkitAPI {
   const messageName = 'prompt-template'
 
   export const getAllPromptTemplate = async (): Promise<IDBPromptTemplate[]> => {
