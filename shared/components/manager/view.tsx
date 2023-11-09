@@ -192,7 +192,6 @@ export const ManagerView = () => {
           </List>
         )}
       </AutoResizer>
-
     </UnorderedList>
   </motion.div>
 }

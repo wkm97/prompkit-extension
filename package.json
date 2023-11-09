@@ -3,7 +3,7 @@
   "displayName": "Puronputo extension",
   "version": "0.0.1",
   "description": "Puronputo Chrome Extension",
-  "author": "Plasmo Corp. <foss@plasmo.com>",
+  "author": "karming",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
@@ -37,17 +37,14 @@
     "typescript": "5.2.2"
   },
   "manifest": {
-    "host_permissions": [
-      "https://*/*"
-    ],
     "permissions": [
       "contextMenus"
     ],
     "commands": {
       "trigger-manager": {
         "suggested_key": {
-          "default": "Ctrl+K",
-          "mac": "Command+K"
+          "default": "Ctrl+Shift+K",
+          "mac": "Command+Shift+K"
         },
         "description": "Insert \"Prompt\" on the current cursor."
       }
