@@ -15,7 +15,7 @@ export const InputTextLabel = styled.label({
 
 export const InputText = styled.input(({theme})=>({
   color: theme.colors.text.primary,
-  backgroundColor: theme.colors.fill.tertiary,
+  backgroundColor: theme.colors.fill.secondary,
   fontSize: '1em',
   boxShadow: theme.shadows.border,
   padding: '0.5em',

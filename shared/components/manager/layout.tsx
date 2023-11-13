@@ -13,6 +13,6 @@ export const ManagerContent = styled.div(({ theme }) => ({
   backgroundColor: theme.colors.fill.secondary,
   boxShadow: tokens.shadows.xxl,
   borderRadius: `0 0 ${tokens.borderRadius.md} ${tokens.borderRadius.md}`,
-  border: `1px solid ${theme.colors.fill.tertiary}`,
+  border: `1px solid ${theme.colors.fill.secondary}`,
   color: theme.colors.text.primary
 }))

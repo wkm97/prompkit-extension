@@ -15,9 +15,9 @@ const Button = styled.button({
 
 export const SolidButton = styled(Button)(({ theme }) => ({
   color: theme.colors.text.primary,
-  backgroundColor: theme.colors.fill.tertiary,
+  backgroundColor: theme.colors.fill.secondary,
   ':hover': {
-    backgroundColor: theme.colors.fill.secondary,
+    backgroundColor: theme.colors.fill.tertiary,
   }
 }))
 

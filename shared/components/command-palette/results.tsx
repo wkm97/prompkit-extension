@@ -23,7 +23,8 @@ const StyledItem = styled.li(({ theme }) => ({
   color: theme.colors.text.primary,
   backgroundColor: 'transparent',
   "&[aria-selected=true]": {
-    backgroundColor: theme.colors.accent.primary
+    backgroundColor: theme.colors.brand.primary,
+    color: theme.colors.brand.tertiary
   },
   ':last-child': {
     borderBottomLeftRadius: tokens.borderRadius.md,

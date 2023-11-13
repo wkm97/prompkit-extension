@@ -1,22 +1,18 @@
-import type { Theme } from "@emotion/react";
-import { tokens } from "./tokens";
-import { shadows } from "./tokens/shadow";
-
 const darkTheme = {
   colors: {
     fill: {
-      primary: '#1E1E1E',
-      secondary: '#252525',
-      tertiary: '#2C2C2C'
+      primary: '#242424',
+      secondary: '#3d3d3d',
+      tertiary: '#555555'
     },
     text: {
-      primary: 'rgba(255, 255, 255, 0.85)',
-      secondary: 'rgba(255, 255, 255, 0.55)',
-      tertiary: 'rgba(255, 255, 255, 0.25)',
-      negative: 'rgba(0, 0, 0, 0.85)'
+      primary: '#ffffff',
+      secondary: '#f0f0f0'
     },
-    accent: {
-      primary: 'rgba(10, 132, 255, 1)'
+    brand: {
+      primary: '#005f98',
+      secondary: '#4e8cc9',
+      tertiary: '#b7eeff'
     },
     status: {
       info: '#63B3ED',

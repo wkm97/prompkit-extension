@@ -19,7 +19,7 @@ export const TextAreaLabel = styled.label({
 export const TextAreaInput = styled.textarea(({ theme }) => ({
   fontFamily: tokens.fontFamily.sans.join(','),
   color: theme.colors.text.primary,
-  backgroundColor: theme.colors.fill.tertiary,
+  backgroundColor: theme.colors.fill.secondary,
   fontSize: '1em',
   padding: '0.5em',
   borderRadius: '4px',

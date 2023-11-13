@@ -29,11 +29,14 @@ const ListItem = styled.li(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   gap: tokens.spacing["2"],
-  padding: `${tokens.spacing[4]} ${tokens.spacing[4]}`,
+  height: '100%',
+  paddingInlineStart: tokens.spacing[4],
+  paddingInlineEnd: tokens.spacing[4],
   color: theme.colors.text.primary,
   backgroundColor: 'transparent',
   "&[aria-selected=true]": {
-    backgroundColor: theme.colors.accent.primary
+    backgroundColor: theme.colors.brand.primary,
+    color: theme.colors.brand.tertiary
   }
 }))
 
@@ -151,7 +154,9 @@ export const ManagerView = () => {
     };
   }, [results])
 
-  const height = Math.min(640, results.length * 64)
+  const HEIGHT_PER_ITEM = 48
+
+  const height = Math.min(HEIGHT_PER_ITEM * 10, results.length * HEIGHT_PER_ITEM)
 
   return <motion.div
     initial={{ y: 10, opacity: 0 }}
@@ -165,7 +170,7 @@ export const ManagerView = () => {
             height={height}
             itemCount={results.length}
             itemData={results}
-            itemSize={64}
+            itemSize={HEIGHT_PER_ITEM}
             ref={listRef}
             width={width}
           >
