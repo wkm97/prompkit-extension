@@ -22,7 +22,7 @@ const promptInjector = (element: Element) => {
     return (prompt: string) => {
       const inputEvent = new Event("input", { bubbles: true, cancelable: false, composed: true })
       const el = (element as HTMLInputElement);
-      el.value = prompt;
+      el.value += prompt;
       el.dispatchEvent(inputEvent)
       el.focus();
     }
@@ -32,9 +32,9 @@ const promptInjector = (element: Element) => {
     const el = element as HTMLDivElement;
     return (prompt: string) => {
       if (element.hasChildNodes()) {
-        element.childNodes[0].textContent = prompt
+        element.childNodes[0].textContent += prompt
       } else {
-        element.textContent = prompt
+        element.textContent += prompt
       }
       el.focus();
       setCursorToEnd(el)

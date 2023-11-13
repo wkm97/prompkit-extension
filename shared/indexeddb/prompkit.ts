@@ -2,7 +2,7 @@ import Dexie from "dexie";
 import { examplePrompts } from "~shared/constants";
 import type { IDBPromptTemplate } from "~shared/models/prompt-template";
 import { v4 as uuidv4 } from 'uuid';
-import { sendToBackground, type PlasmoMessaging } from "@plasmohq/messaging";
+import { sendToBackground } from "@plasmohq/messaging";
 
 export class IDBPrompkit extends Dexie {
   promptTemplate!: Dexie.Table<IDBPromptTemplate, string>;
@@ -11,7 +11,7 @@ export class IDBPrompkit extends Dexie {
     super("IDBPrompkit");
 
     this.version(1).stores({
-      promptTemplate: "&id,name,createdAt"
+      promptTemplate: "&id,name,createdAt,*tags"
     })
 
     this.on('populate', (tx) => {

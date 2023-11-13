@@ -82,10 +82,10 @@ export const ManagerView = () => {
   const { query } = state
   const [activeIndex, setActiveIndex] = useState(0);
   const toast = useToast();
-  const {results, mutate} = useSearchPromptTemplate({query, onQueryChange: ()=> setActiveIndex(0)})
+  const { results, mutate } = useSearchPromptTemplate({ query, onQueryChange: () => setActiveIndex(0) })
 
   const handleDelete = (id: string) => {
-    mutate(()=> IDBPrompkitAPI.deletePromptTemplate(id))
+    mutate(() => IDBPrompkitAPI.deletePromptTemplate(id))
   }
 
   const handleCopy = (promptTemplate: IDBPromptTemplate) => {
@@ -149,12 +149,13 @@ export const ManagerView = () => {
     window.addEventListener("keydown", handler);
     document.body.addEventListener("mousemove", exitPointerLockHandler);
     return () => {
+      exitPointerLockHandler();
       window.removeEventListener("keydown", handler)
       document.body.removeEventListener("mousemove", exitPointerLockHandler);
     };
   }, [results])
 
-  const HEIGHT_PER_ITEM = 48
+  const HEIGHT_PER_ITEM = 52
 
   const height = Math.min(HEIGHT_PER_ITEM * 10, results.length * HEIGHT_PER_ITEM)
 
