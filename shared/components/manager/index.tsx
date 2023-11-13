@@ -85,7 +85,7 @@ export const Manager = ({ children }: React.PropsWithChildren) => {
             <Spacer />
           </>}
           {["viewing"].includes(operation) && <>
-            <Search autoFocus placeholder="Search Prompt..." onChange={(e)=> searchResult(dispatch, e.target.value)}/>
+            <Search autoFocus placeholder="Search Prompkit..." onChange={(e)=> searchResult(dispatch, e.target.value)}/>
             <GhostIconButton onClick={() => initialCreating(dispatch)} aria-label="create">
               <PlusIcon width="1em" height="1em" strokeWidth={3} />
             </GhostIconButton></>}
