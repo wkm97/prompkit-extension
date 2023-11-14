@@ -97,7 +97,6 @@ export const PromptInjectorProvider = ({children}: React.PropsWithChildren) => {
       // bingchat
       if(e.target.tagName.toLowerCase() === 'cib-serp'){
         const el = e.target.shadowRoot.querySelector('cib-action-bar').shadowRoot.querySelector('cib-text-input').shadowRoot.querySelector('textarea')
-        console.log(el)
         setTargetElement(el)
       }
 

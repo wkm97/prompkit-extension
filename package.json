@@ -1,9 +1,10 @@
 {
   "name": "prompkit-extension",
-  "displayName": "Prompkit extension",
+  "homepage": "https://www.prompkit.com",
+  "displayName": "Prompkit: The AI Prompt Manager",
   "version": "0.0.1",
-  "description": "Prompkit extension",
-  "author": "karming",
+  "description": "Simplify way to keep your favorite prompts with our browser extension.",
+  "author": "prompkit-dev",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
@@ -19,7 +20,7 @@
     "flexsearch-ts": "^0.7.35",
     "formik": "^2.4.5",
     "framer-motion": "^10.16.4",
-    "plasmo": "0.83.0",
+    "plasmo": "0.84.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-virtualized-auto-sizer": "^1.0.20",
@@ -38,7 +39,8 @@
   },
   "manifest": {
     "permissions": [
-      "contextMenus"
+      "contextMenus",
+      "storage"
     ],
     "commands": {
       "trigger-manager": {
@@ -46,7 +48,7 @@
           "default": "Ctrl+Shift+K",
           "mac": "Command+Shift+K"
         },
-        "description": "Insert \"Prompt\" on the current cursor."
+        "description": "Open \"Prompt Manager\" shortcut."
       }
     }
   }

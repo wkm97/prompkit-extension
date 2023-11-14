@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useReducer } from "react";
 import type { IDBPromptTemplate } from "~shared/models/prompt-template";
+import { track } from "~shared/tracker";
 
 export enum ManagerActionKind {
   VIEWING = "viewing",
@@ -34,18 +35,21 @@ export const ManagerProvider = ({ children }: React.PropsWithChildren) => {
       const { type, payload } = action;
       switch (type) {
         case ManagerActionKind.VIEWING:
+          track([{name: 'page_view', params: {page_title: 'manager_viewing', page_location: document.location.host}}])
           return {
             ...state,
             operation: ManagerActionKind.VIEWING,
             query: payload?.query || ""
           };
         case ManagerActionKind.CREATING:
+          track([{name: 'page_view', params: {page_title: 'manager_creating', page_location: document.location.host}}])
           return {
             ...state,
             operation: ManagerActionKind.CREATING,
             editor: payload?.editor
           };
         case ManagerActionKind.EDITING:
+          track([{name: 'page_view', params: {page_title: 'manager_editing', page_location: document.location.host}}])
           return {
             ...state,
             operation: ManagerActionKind.EDITING,

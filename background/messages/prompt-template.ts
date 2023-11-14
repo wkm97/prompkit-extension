@@ -2,6 +2,7 @@ import type { PlasmoMessaging } from "@plasmohq/messaging";
 import { IDBPrompkit } from "~shared/indexeddb/prompkit";
 import * as FlexSearch from 'flexsearch-ts';
 import type { IDBPromptTemplate } from "~shared/models/prompt-template";
+import { track } from "~shared/tracker";
 
 const index = new FlexSearch.Document<IDBPromptTemplate, false>({
   document: {
@@ -25,11 +26,13 @@ const handler: PlasmoMessaging.PortHandler = async (req, res) => {
     const data = req.body.payload
     db.promptTemplate.put(data)
     index.add(data.id, data)
+    track([{ name: 'prompt_template_upserted' }])
   }
 
   if (req.body.action === 'delete') {
     db.promptTemplate.delete(req.body.payload.id)
     index.remove(req.body.payload.id)
+    track([{ name: 'prompt_template_deleted' }])
   }
 
   if (req.body.action === 'getAll') {

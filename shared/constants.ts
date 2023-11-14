@@ -34,9 +34,9 @@ const noteTaking = `You are NotesGPT, an AI language model skilled at taking det
 By following this prompt, you will help me better understand the material and prepare for any relevant exams or assessments. The subject for this set of notes is: “___”. This is the text:`
 
 export const examplePrompts = [
-  { name: 'Grammar Checker', template: grammarChecker },
-  { name: 'Summarizer', template: summarizer },
-  { name: 'Note Taking', template: noteTaking },
-  { name: 'Explain like I\'m 11 years old', template: 'I want to learn about {topic}. Explain it like I\'m 11 years old in simple terms and use analogies and examples that they can relate to.' },
-  { name: 'Act as an English Translator and Improver', template: 'I want you to act as an English translator, spelling corrector and improver. I will speak to you in any language and you will detect the language, translate it and answer in the corrected and improved version of my text, in English. I want you to replace my simplified A0-level words and sentences with more beautiful and elegant, upper level English words and sentences. Keep the meaning same, but make them more literary. I want you to only reply the correction, the improvements and nothing else, do not write explanations. My first sentence is "istanbulu cok seviyom burada olmak cok guzel"' },
+  { name: 'Sample: Grammar Checker', template: grammarChecker },
+  { name: 'Sample: Summarizer', template: summarizer },
+  { name: 'Sample: Note Taking', template: noteTaking },
+  { name: 'Sample: Explain like I\'m 11 years old', template: 'I want to learn about {topic}. Explain it like I\'m 11 years old in simple terms and use analogies and examples that they can relate to.' },
+  { name: 'Sample: Act as an English Translator and Improver', template: 'I want you to act as an English translator, spelling corrector and improver. I will speak to you in any language and you will detect the language, translate it and answer in the corrected and improved version of my text, in English. I want you to replace my simplified A0-level words and sentences with more beautiful and elegant, upper level English words and sentences. Keep the meaning same, but make them more literary. I want you to only reply the correction, the improvements and nothing else, do not write explanations. My first sentence is "istanbulu cok seviyom burada olmak cok guzel"' },
 ]
